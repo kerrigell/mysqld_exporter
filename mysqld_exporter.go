@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"regexp"
 	"strconv"
 	"time"
 
@@ -211,6 +212,14 @@ func newHandler(metrics collector.Metrics, scrapers []collector.Scraper, logger 
 			}
 		}
 
+		// Accept custom dsn to connect multiple instances
+		hostPort := r.URL.Query()["address"]
+		if len(hostPort) > 0 {
+			addrReg := regexp.MustCompile(`\(.*:.*\)`)
+			dsn = addrReg.ReplaceAllString(dsn, "("+hostPort[0]+")")
+			level.Debug(logger).Log("msg", "dsn", "redefine", dsn)
+		}
+
 		registry := prometheus.NewRegistry()
 		registry.MustRegister(collector.New(ctx, dsn, metrics, filteredScrapers, logger))
 
@@ -268,7 +277,7 @@ func main() {
 		var err error
 		if dsn, err = parseMycnf(*configMycnf); err != nil {
 			level.Info(logger).Log("msg", "Error parsing my.cnf", "file", *configMycnf, "err", err)
-			os.Exit(1)
+			//os.Exit(1)
 		}
 	}
 

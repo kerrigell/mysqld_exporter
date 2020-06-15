@@ -227,6 +227,7 @@ func newHandler(metrics collector.Metrics, scrapers []collector.Scraper, logger 
 			prometheus.DefaultGatherer,
 			registry,
 		}
+
 		// Delegate http serving to Prometheus client library, which will call collector.Collect.
 		h := promhttp.HandlerFor(gatherers, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)

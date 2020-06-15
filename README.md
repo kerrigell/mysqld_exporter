@@ -176,3 +176,9 @@ There are some sample rules available in [example.rules](example.rules)
 [travis]: https://travis-ci.org/prometheus/mysqld_exporter
 [quay]: https://quay.io/repository/prometheus/mysqld-exporter
 [parsetime]: https://github.com/go-sql-driver/mysql#parsetime
+
+## Unofficial Features
+
+* 20200515 multi instance collector
+  request GET /metrics?address=[instance_ip]:[instance_port]
+*

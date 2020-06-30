@@ -275,12 +275,15 @@ func main() {
 
 	dsn = os.Getenv("DATA_SOURCE_NAME")
 	if len(dsn) == 0 {
+		level.Debug(logger).Log("parse conf", configMycnf)
 		var err error
 		if dsn, err = parseMycnf(*configMycnf); err != nil {
 			level.Info(logger).Log("msg", "Error parsing my.cnf", "file", *configMycnf, "err", err)
 			//os.Exit(1)
 		}
 	}
+
+	level.Debug(logger).Log("dsn:", dsn)
 
 	// Register only scrapers enabled by flag.
 	enabledScrapers := []collector.Scraper{}
